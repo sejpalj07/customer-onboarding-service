@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1fgqg8n" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.2.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.17.0">
+  <bpmn:process id="CustomerOnBoardingSys" isExecutable="true">
+    <bpmn:startEvent id="CBS_receive_info" name="Start an application">
+      <bpmn:outgoing>Flow_11gvdnn</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_05ywws2" messageRef="Message_051aavv" />
+    </bpmn:startEvent>
+    <bpmn:inclusiveGateway id="Gateway_services">
+      <bpmn:incoming>Flow_11gvdnn</bpmn:incoming>
+      <bpmn:outgoing>Flow_0p1k0wu</bpmn:outgoing>
+    </bpmn:inclusiveGateway>
+    <bpmn:subProcess id="SP_gather_info">
+      <bpmn:incoming>Flow_0p1k0wu</bpmn:incoming>
+      <bpmn:incoming>Flow_1k4n4bg</bpmn:incoming>
+      <bpmn:outgoing>Flow_11birai</bpmn:outgoing>
+      <bpmn:startEvent id="SP_gather_info_starter">
+        <bpmn:outgoing>Flow_0wws60f</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:exclusiveGateway id="SP_gather_info_Gateway">
+        <bpmn:incoming>Flow_0wws60f</bpmn:incoming>
+        <bpmn:outgoing>Flow_0g1a67t</bpmn:outgoing>
+        <bpmn:outgoing>Flow_0g9cizw</bpmn:outgoing>
+      </bpmn:exclusiveGateway>
+      <bpmn:endEvent id="SP_gather_info_end">
+        <bpmn:incoming>Flow_1bza62r</bpmn:incoming>
+        <bpmn:incoming>Flow_03namnr</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:serviceTask id="SP_gather_info_online_Task" name="Gather Customer Information" camunda:delegateExpression="${CustomerInformation}">
+        <bpmn:incoming>Flow_0g9cizw</bpmn:incoming>
+        <bpmn:outgoing>Flow_03namnr</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:userTask id="SP_gather_info_agent_Task" name="Gather Customer Information">
+        <bpmn:incoming>Flow_0g1a67t</bpmn:incoming>
+        <bpmn:outgoing>Flow_1bza62r</bpmn:outgoing>
+      </bpmn:userTask>
+      <bpmn:sequenceFlow id="Flow_1bza62r" sourceRef="SP_gather_info_agent_Task" targetRef="SP_gather_info_end" />
+      <bpmn:sequenceFlow id="Flow_03namnr" sourceRef="SP_gather_info_online_Task" targetRef="SP_gather_info_end" />
+      <bpmn:sequenceFlow id="Flow_0g1a67t" sourceRef="SP_gather_info_Gateway" targetRef="SP_gather_info_agent_Task">
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${customerRequest.applicationType == "agent"}</bpmn:conditionExpression>
+      </bpmn:sequenceFlow>
+      <bpmn:sequenceFlow id="Flow_0g9cizw" sourceRef="SP_gather_info_Gateway" targetRef="SP_gather_info_online_Task">
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${customerRequest.applicationType == "online"}</bpmn:conditionExpression>
+      </bpmn:sequenceFlow>
+      <bpmn:sequenceFlow id="Flow_0wws60f" sourceRef="SP_gather_info_starter" targetRef="SP_gather_info_Gateway" />
+    </bpmn:subProcess>
+    <bpmn:userTask id="UT_ack_customer" name="ack customer info">
+      <bpmn:incoming>Flow_11birai</bpmn:incoming>
+      <bpmn:outgoing>Flow_1tixcpn</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="Event_1b8acvm">
+      <bpmn:incoming>Flow_04w9k8d</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="script_change_to_under_verification" name="change status to under verification">
+      <bpmn:incoming>Flow_1tixcpn</bpmn:incoming>
+      <bpmn:outgoing>Flow_04w9k8d</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:boundaryEvent id="Event_0ltidp3CBS_ack_customer_catch_message" attachedToRef="UT_ack_customer">
+      <bpmn:outgoing>Flow_1k4n4bg</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1aziznv" messageRef="Message_1nb76cl" />
+    </bpmn:boundaryEvent>
+    <bpmn:sequenceFlow id="Flow_11gvdnn" sourceRef="CBS_receive_info" targetRef="Gateway_services" />
+    <bpmn:sequenceFlow id="Flow_0p1k0wu" sourceRef="Gateway_services" targetRef="SP_gather_info">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${customerRequest.service == "401K"}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1k4n4bg" sourceRef="Event_0ltidp3CBS_ack_customer_catch_message" targetRef="SP_gather_info" />
+    <bpmn:sequenceFlow id="Flow_11birai" sourceRef="SP_gather_info" targetRef="UT_ack_customer" />
+    <bpmn:sequenceFlow id="Flow_1tixcpn" sourceRef="UT_ack_customer" targetRef="script_change_to_under_verification" />
+    <bpmn:sequenceFlow id="Flow_04w9k8d" sourceRef="script_change_to_under_verification" targetRef="Event_1b8acvm" />
+    <bpmn:textAnnotation id="TextAnnotation_1dgdmmr">
+      <bpmn:text>Default flow for 401K</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:textAnnotation id="TextAnnotation_1ib9icw">
+      <bpmn:text>application can be modified when it's in progress. status = in progress</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_18r6ys1" sourceRef="CBS_receive_info" targetRef="TextAnnotation_1ib9icw" />
+    <bpmn:association id="Association_0r9lksw" sourceRef="Flow_0p1k0wu" targetRef="TextAnnotation_1dgdmmr" />
+  </bpmn:process>
+  <bpmn:message id="Message_051aavv" name="Message_CBS" />
+  <bpmn:message id="Message_1nb76cl" name="Message_abc" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="CustomerOnBoardingSys">
+      <bpmndi:BPMNEdge id="Flow_04w9k8d_di" bpmnElement="Flow_04w9k8d">
+        <di:waypoint x="1270" y="240" />
+        <di:waypoint x="1362" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_0pkc8v4" bpmnElement="Flow_1tixcpn">
+        <di:waypoint x="1070" y="240" />
+        <di:waypoint x="1170" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_1fjqi6u" bpmnElement="Flow_11birai">
+        <di:waypoint x="840" y="240" />
+        <di:waypoint x="970" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_0ilipk9" bpmnElement="Flow_1k4n4bg">
+        <di:waypoint x="1030" y="182" />
+        <di:waypoint x="1030" y="80" />
+        <di:waypoint x="390" y="80" />
+        <di:waypoint x="390" y="250" />
+        <di:waypoint x="460" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_10e12vf" bpmnElement="Flow_0p1k0wu">
+        <di:waypoint x="335" y="250" />
+        <di:waypoint x="460" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_15qfvbb" bpmnElement="Flow_11gvdnn">
+        <di:waypoint x="198" y="250" />
+        <di:waypoint x="285" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="BPMNShape_1j045vw" bpmnElement="CBS_receive_info">
+        <dc:Bounds x="162" y="232" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="154" y="275" width="53" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_07nt0t3" bpmnElement="Gateway_services">
+        <dc:Bounds x="285" y="225" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0x6vw1y" bpmnElement="SP_gather_info" isExpanded="true">
+        <dc:Bounds x="460" y="132" width="380" height="235" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_1poxiid" bpmnElement="Flow_0wws60f">
+        <di:waypoint x="518" y="250" />
+        <di:waypoint x="555" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_1gx7d8a" bpmnElement="Flow_0g9cizw">
+        <di:waypoint x="580" y="225" />
+        <di:waypoint x="580" y="192" />
+        <di:waypoint x="640" y="192" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_0fuvcma" bpmnElement="Flow_0g1a67t">
+        <di:waypoint x="580" y="275" />
+        <di:waypoint x="580" y="310" />
+        <di:waypoint x="640" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_0hg8fk5" bpmnElement="Flow_03namnr">
+        <di:waypoint x="740" y="192" />
+        <di:waypoint x="780" y="192" />
+        <di:waypoint x="780" y="232" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_1xdixlo" bpmnElement="Flow_1bza62r">
+        <di:waypoint x="740" y="310" />
+        <di:waypoint x="780" y="310" />
+        <di:waypoint x="780" y="268" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="BPMNShape_0n4glue" bpmnElement="SP_gather_info_starter">
+        <dc:Bounds x="482" y="232" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1vp1okn" bpmnElement="SP_gather_info_Gateway" isMarkerVisible="true">
+        <dc:Bounds x="555" y="225" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_05jtz1m" bpmnElement="SP_gather_info_end">
+        <dc:Bounds x="762" y="232" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1da753m" bpmnElement="SP_gather_info_online_Task">
+        <dc:Bounds x="640" y="152" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0xy8e81" bpmnElement="SP_gather_info_agent_Task">
+        <dc:Bounds x="640" y="270" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1wkjg6e" bpmnElement="UT_ack_customer">
+        <dc:Bounds x="970" y="200" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1b8acvm_di" bpmnElement="Event_1b8acvm">
+        <dc:Bounds x="1362" y="222" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0r1ilrb_di" bpmnElement="script_change_to_under_verification">
+        <dc:Bounds x="1170" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_13gvvjs" bpmnElement="TextAnnotation_1dgdmmr">
+        <dc:Bounds x="320" y="300" width="100" height="41" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0m0ic9y" bpmnElement="TextAnnotation_1ib9icw">
+        <dc:Bounds x="200" y="155" width="120" height="70" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0brfxqv" bpmnElement="Event_0ltidp3CBS_ack_customer_catch_message">
+        <dc:Bounds x="1012" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_061m2mz" bpmnElement="Association_18r6ys1">
+        <di:waypoint x="191" y="236" />
+        <di:waypoint x="201" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_05x2n3s" bpmnElement="Association_0r9lksw">
+        <di:waypoint x="398" y="250" />
+        <di:waypoint x="375" y="300" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
