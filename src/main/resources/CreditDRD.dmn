@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="DRDCreditDefination" name="DRD Credit" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.2.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.17.0">
   <decision id="DRDCreditDecision" name="DRD Credit Decision">
-    <decisionTable id="DecisionTable_05bm9hw">
+    <decisionTable id="DecisionTable_05bm9hw" hitPolicy="FIRST">
       <input id="Input_1" camunda:inputVariable="creditScore">
         <inputExpression id="InputExpression_1" typeRef="string">
           <text>customerRequest.credit</text>
         </inputExpression>
       </input>
-      <output id="Output_1" typeRef="string" />
+      <output id="Output_1" name="isValidCredit" typeRef="string" />
       <rule id="DecisionRule_1dqs4c1">
         <inputEntry id="UnaryTests_1usl121">
           <text>"600"</text>
