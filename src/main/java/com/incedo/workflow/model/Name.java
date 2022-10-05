@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Name extends BasePO{
     private long nameId;
-    private long customerId;
     private String firstName;
     private String middleName;
     private String lastName;

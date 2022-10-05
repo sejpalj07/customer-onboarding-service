@@ -4,7 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,7 +16,7 @@ public class ApplicationDocuments extends BasePO{
     private String documentFileName;
     private String documentLink;
     private String fileExtension;
-    private LocalDate uploadDate;
+    private Date uploadDate;
     private String uploadBy;
 
 }

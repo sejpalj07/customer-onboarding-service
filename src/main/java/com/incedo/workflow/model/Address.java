@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Address extends BasePO{
     private long addressId;
-    private long customerId;
     private String street1;
     private String street2;
     private String city;

@@ -4,15 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Application extends BasePO{
+public class OnBoardApplication extends BasePO{
     private long applicationId;
-    private CodedApplicationStatus statusCode;
-    private LocalDate startTime;
-    private LocalDate completedTime;
+    private String statusCode;
+    private Date startTime;
+    private Date completedTime;
     private Customer customer;
     private String customerTypeCode;
     private String applicationTypeCode;

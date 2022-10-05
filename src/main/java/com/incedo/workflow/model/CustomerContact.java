@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CustomerContact extends BasePO{
     private long customerContactId;
-    private long customerId;
     private Phone cellPhone;
     private String email;
     private Phone alternatePhone;
