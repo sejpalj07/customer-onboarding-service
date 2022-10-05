@@ -15,4 +15,8 @@ public class CustomerRequest implements Serializable {
     private String applicationType;
     private String service;
     private String status;
+    private String address;
+    private String credit;
+    private boolean backGround;
+    private  boolean CBSStatus;
 }

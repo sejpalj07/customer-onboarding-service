@@ -37,6 +37,7 @@ public class HomeController {
         Map<String, Object> variables = new HashMap<>();
         variables.put("customerRequest", customerRequest);
         variables.put("bKey", bKey);
+        variables.put("status", "submitted");
         this.runtimeService.correlateMessage("Message_CBS", bKey, variables);
         return new ResponseEntity<>("Customer on-boarding BPM is Running.", HttpStatus.OK);
     }
@@ -49,6 +50,7 @@ public class HomeController {
         log.info("exe id :" + exeId);
         log.info("bKey :" + bKey);
         Map<String, Object> variables = new HashMap<>();
+        variables.put("status", "submitted");
         variables.put("customerRequest", customerRequest);
         this.runtimeService.correlateMessage("Message_abc", bKey, variables);
         return new ResponseEntity<>("Customer on-boarding BPM is Running.", HttpStatus.OK);
