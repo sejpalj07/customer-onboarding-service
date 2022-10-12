@@ -1,19 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="DRDCBSStatusDefination" name="DRD CBS Status" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.2.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.17.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="DRDCBSStatusDefination" name="DRD CBS Status" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.2.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.17.0">
   <decision id="DRDCBSStatusDecision" name="DRD CBS Status Decision">
-    <decisionTable id="DecisionTable_16biwl7">
-      <input id="Input_1" camunda:inputVariable="CBSStatusValue">
+    <decisionTable id="DecisionTable_16biwl7" hitPolicy="FIRST">
+      <input id="Input_1" label="identityDecision" biodi:width="192" camunda:inputVariable="identity">
         <inputExpression id="InputExpression_1" typeRef="string">
-          <text>customerRequest.CBSStatus</text>
+          <text>identityDecision</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0j8jgni" label="cbrDecision" camunda:inputVariable="creditResponse">
+        <inputExpression id="LiteralExpression_1rq6c59" typeRef="string">
+          <text>cbrDecision</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_1oijfgm" label="creditScore" camunda:inputVariable="CBRResponse">
+        <inputExpression id="LiteralExpression_1dprz09" typeRef="double" expressionLanguage="feel">
+          <text>creditScore</text>
         </inputExpression>
       </input>
       <output id="Output_1" typeRef="string" />
       <rule id="DecisionRule_03xgzr4">
         <inputEntry id="UnaryTests_1uea26d">
-          <text>"true"</text>
+          <text>"Approved"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ydhah6">
+          <text>"Approved"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0z58igs">
+          <text>&gt; 700</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0pxua42">
-          <text>true</text>
+          <text>"premium"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_18kftbd">
+        <inputEntry id="UnaryTests_02i7bv9">
+          <text>"Approved"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0uijllu">
+          <text>"Approved"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0c3jy2o">
+          <text>&gt; 600</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_03fh01l">
+          <text>"gold"</text>
         </outputEntry>
       </rule>
     </decisionTable>

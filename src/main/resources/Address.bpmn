@@ -1,38 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1nluxyv" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.2.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.17.0">
   <bpmn:process id="Process_Address" name="Process Address" isExecutable="true">
-    <bpmn:startEvent id="address_start">
-      <bpmn:outgoing>Flow_1qomel5</bpmn:outgoing>
-    </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_1qomel5" sourceRef="address_start" targetRef="address_ST" />
-    <bpmn:endEvent id="address_end">
-      <bpmn:incoming>Flow_0e3bidd</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_0e3bidd" sourceRef="address_ST" targetRef="address_end" />
-    <bpmn:serviceTask id="address_ST" name="verify address" camunda:delegateExpression="${AddressAPI}">
+    <bpmn:sequenceFlow id="Flow_1qomel5" sourceRef="identity_start" targetRef="identity_ST" />
+    <bpmn:sequenceFlow id="Flow_0e3bidd" sourceRef="identity_ST" targetRef="identity_end" />
+    <bpmn:serviceTask id="identity_ST" name="verify identity" camunda:delegateExpression="${IdentityAPI}">
       <bpmn:incoming>Flow_1qomel5</bpmn:incoming>
       <bpmn:outgoing>Flow_0e3bidd</bpmn:outgoing>
     </bpmn:serviceTask>
+    <bpmn:startEvent id="identity_start">
+      <bpmn:outgoing>Flow_1qomel5</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_02zsn4m" messageRef="Message_3cqlrjp" />
+    </bpmn:startEvent>
+    <bpmn:endEvent id="identity_end" camunda:asyncBefore="true">
+      <bpmn:incoming>Flow_0e3bidd</bpmn:incoming>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0n2u6vo" messageRef="Message_0213a23" camunda:delegateExpression="${IdentityResponse}" />
+    </bpmn:endEvent>
   </bpmn:process>
+  <bpmn:message id="Message_3cqlrjp" name="Message_Identity_Request" />
+  <bpmn:message id="Message_0213a23" name="Message_Identity_Response" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_Address">
       <bpmndi:BPMNEdge id="Flow_0e3bidd_di" bpmnElement="Flow_0e3bidd">
         <di:waypoint x="370" y="117" />
-        <di:waypoint x="432" y="117" />
+        <di:waypoint x="462" y="117" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1qomel5_di" bpmnElement="Flow_1qomel5">
         <di:waypoint x="215" y="117" />
         <di:waypoint x="270" y="117" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="address_start">
-        <dc:Bounds x="179" y="99" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_02xp17h_di" bpmnElement="address_end">
-        <dc:Bounds x="432" y="99" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0z39ywx_di" bpmnElement="address_ST">
+      <bpmndi:BPMNShape id="Activity_0z39ywx_di" bpmnElement="identity_ST">
         <dc:Bounds x="270" y="77" width="100" height="80" />
         <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0tjx37h_di" bpmnElement="identity_start">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1sjnert_di" bpmnElement="identity_end">
+        <dc:Bounds x="462" y="99" width="36" height="36" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

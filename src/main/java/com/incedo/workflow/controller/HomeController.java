@@ -1,6 +1,6 @@
 package com.incedo.workflow.controller;
 
-import com.incedo.workflow.model.CustomerRequest;
+import com.incedo.workflow.model.DataRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
@@ -32,26 +32,28 @@ public class HomeController {
     }
 
     @PostMapping("/process")
-    public ResponseEntity<String> invokeProcess(@RequestBody CustomerRequest customerRequest) {
-        log.info("InvokeProcess :" + customerRequest);
+    public ResponseEntity<String> invokeProcess(@RequestBody DataRequest dataRequest) {
+        log.info("InvokeProcess :" + dataRequest);
         Map<String, Object> variables = new HashMap<>();
-        variables.put("customerRequest", customerRequest);
+        variables.put("dataRequest", dataRequest);
         variables.put("bKey", bKey);
         variables.put("status", "submitted");
+        variables.put("applicationTypeCode", dataRequest.getApplicationTypeCode());
+        variables.put("applicationProcess", dataRequest.getApplicationProcess());
         this.runtimeService.correlateMessage("Message_CBS", bKey, variables);
         return new ResponseEntity<>("Customer on-boarding BPM is Running.", HttpStatus.OK);
     }
 
     @PostMapping("/sendMessage")
-    public ResponseEntity<String> sendMessage(@RequestBody CustomerRequest customerRequest) {
-        log.info("sendMessage :" + customerRequest);
+    public ResponseEntity<String> sendMessage(@RequestBody DataRequest dataRequest) {
+        log.info("sendMessage :" + dataRequest);
         List<Execution> listProcessInstance = runtimeService.createExecutionQuery().list();
         String exeId = listProcessInstance.get(0).getId();
         log.info("exe id :" + exeId);
         log.info("bKey :" + bKey);
         Map<String, Object> variables = new HashMap<>();
         variables.put("status", "submitted");
-        variables.put("customerRequest", customerRequest);
+        variables.put("dataRequest", dataRequest);
         this.runtimeService.correlateMessage("Message_abc", bKey, variables);
         return new ResponseEntity<>("Customer on-boarding BPM is Running.", HttpStatus.OK);
     }

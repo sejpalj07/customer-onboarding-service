@@ -9,9 +9,8 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Phone implements Serializable {
-    private int countryCode;
-    private String number;
-    private String type;
-    private String isPrimary;
+public class Details implements Serializable {
+    private String key;
+    private String value;
+    private String reason;
 }

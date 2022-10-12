@@ -5,13 +5,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Phone implements Serializable {
+public class GovernmentId implements Serializable {
     private int countryCode;
-    private String number;
-    private String type;
-    private String isPrimary;
+    private String documentType;
+    private String value;
+    private Date issueDate;
+    private Date expireDate;
 }

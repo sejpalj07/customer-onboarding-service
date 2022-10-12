@@ -1,0 +1,48 @@
+{
+  "applicationId": "dit2appplication",
+  "consumerId": "consumerId",
+  "statusCode": "InProgress",
+  "applicationTypeCode": "401K",
+  "applicationProcess": "online",
+  "customerData": {
+    "customerId": 10001,
+    "name": {
+      "firstName": "john",
+      "middleName": "",
+      "lastName": "scott",
+      "isPrimary": "true"
+    },
+    "address": [
+      {
+        "addressType": "Current",
+        "countryCode": "US",
+        "addressLine1": "1505 Windward Concourse",
+        "city": "Alpharetta",
+        "county": "Fulton",
+        "state": "GA",
+        "zipCode": "30005",
+        "isPrimary": "true"
+      }
+    ],
+    "dateOfBirth": "1990-01-01",
+    "governmentId": {
+      "documentType": "SSN",
+      "value": "111222666"
+    },
+    "phone": [
+      {
+        "countryCode": "1",
+        "number": "1234567890",
+        "type": "Mobile",
+        "isPrimary": "true"
+      }
+    ],
+    "email": [
+      {
+        "email": "myroslav.kuzemchak@gmail.com",
+        "emailType": "Personal",
+        "isPrimary": "true"
+      }
+    ]
+  }
+}

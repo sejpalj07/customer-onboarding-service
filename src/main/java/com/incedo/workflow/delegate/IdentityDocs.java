@@ -6,10 +6,10 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.stereotype.Component;
 
 @Slf4j
-@Component("AddressAPI")
-public class AddressAPI implements JavaDelegate {
+@Component("IdentityDocs")
+public class IdentityDocs implements JavaDelegate {
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        log.info("AddressAPI");
+        log.info("IdentityDocs");
     }
 }

@@ -5,15 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Name implements Serializable {
-    private String firstName;
-    private String middleName;
-    private String lastName;
-    private String suffix;
-    private String prefix;
+public class Email implements Serializable {
+    private String email;
+    private String emailType;
     private String isPrimary;
 }

@@ -1,13 +1,22 @@
 package com.incedo.workflow.model;
 
-public class Address extends BasePO{
-    private long addressId;
-    private long customerId;
-    private String street1;
-    private String street2;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Address implements Serializable {
+    private String addressType;
+    private String addressLine1;
+    private String addressLine2;
+    private String county;
     private String city;
-    private String zip;
+    private String zipCode;
     private String state;
-    private String country;
-    private String addressTypeCode;
+    private String countryCode;
+    private String isPrimary;
 }
