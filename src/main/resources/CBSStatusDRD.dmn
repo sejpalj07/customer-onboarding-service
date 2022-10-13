@@ -46,6 +46,20 @@
           <text>"gold"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_071huo3">
+        <inputEntry id="UnaryTests_0yd12gw">
+          <text>"Approved"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1sui3fc">
+          <text>"Denied"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1uvzned">
+          <text>&gt; 600</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1i8yr8m">
+          <text>"Not Qualified"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
